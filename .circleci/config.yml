@@ -1,5 +1,6 @@
-version: 2.1orbs:
-  maven: circleci/maven@1.4.1:
+version: 2.1
+orbs:
+  maven: circleci/maven@1.4.1
   docker: circleci/docker@1.5.0executors:
   docker-publisher:
    docker:
