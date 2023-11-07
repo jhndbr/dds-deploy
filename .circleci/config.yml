@@ -9,21 +9,14 @@ orbs:
   docker: circleci/docker@1.5.0
 
 executors:
-java17:
+  java17:
     docker:
       - image: 'cimg/openjdk:17.0'
- docker-publisher: 
-  docker: 
-  - image: circleci/node:latest
-    auth:
-      username: $DOCKERHUB_USERNAME
-      password: $DOCKERHUB_PASSWORD
-
 
 jobs:
-  publishLatestToHub: 
+  publishLatestToHub:
     executor: docker-publisher
-    steps: 
+    steps:
       - checkout
       - setup_remote_docker
       - run:
@@ -32,13 +25,10 @@ jobs:
             echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
             docker build -t ${DOCKERHUB_USERNAME}/$IMAGE_NAME:latest .
             docker push ${DOCKERHUB_USERNAME}/$IMAGE_NAME:latest
+
   say-hello:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
       - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout
       - run:
@@ -48,14 +38,15 @@ jobs:
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
+  version: 2
   say-hello-workflow:
     jobs:
       - say-hello
   maven_test:
     jobs:
-      - maven/test
-command: '-X compile test'
+      - maven/test:
           executor: java17
   deploy:
     jobs:
       - publishLatestToHub
+
