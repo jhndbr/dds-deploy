@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         //be sure to replace "felipelujan" with your own Docker Hub username
-        DOCKER_IMAGE_NAME = "jhndbr/dds-deploy-prueba"
+        DOCKER_IMAGE_NAME = "jhndbr/dds-deploy"
     }
     stages {      
         stage('Build Docker Image') {
