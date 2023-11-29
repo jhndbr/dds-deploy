@@ -1,36 +1,44 @@
 pipeline {
-    agent {
-        docker {
-            image 'jenkins/jenkins:latest'
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
-        }
-    }
-
+    agent any
     environment {
-        // Define las variables necesarias
-        DOCKER_IMAGE_NAME = 'imagenuno'
-        DOCKER_HUB_CREDENTIALS = 'dockerhub_login'
+        //be sure to replace "felipelujan" with your own Docker Hub username
+        DOCKER_IMAGE_NAME = "jhndbr/deploys"
     }
-
-    stages {
-        stage('Construir Imagen Docker') {
+    stages {      
+        stage('Build Docker Image') {
+            when {
+                branch 'master'
+            }
             steps {
                 script {
-                    // Construir la imagen Docker
-                    docker.build(DOCKER_IMAGE_NAME)
+                    app = docker.build(DOCKER_IMAGE_NAME)
                 }
             }
         }
-
-        stage('Subir Imagen a Docker Hub') {
+        stage('Push Docker Image') {
+            when {
+                branch 'master'
+            }
             steps {
                 script {
-                    // Iniciar sesión en Docker Hub
-                    docker.withRegistry('https://registry.hub.docker.com', DOCKER_HUB_CREDENTIALS) {
-                        // Subir la imagen al repositorio de Docker Hub
-                        docker.image(DOCKER_IMAGE_NAME).push()
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub_login') {
+                        app.push("${env.BUILD_NUMBER}")
+                        app.push("latest")
                     }
                 }
+            }
+        }
+        stage('DeployToProduction') {
+            when {
+                branch 'master'
+            }
+            steps {
+                milestone(1)
+                kubernetesDeploy(
+                    kubeconfigId: 'kubeconfig',
+                    configs: 'k8s_svc_deploy.yaml',
+                    enableConfigSubstitution: true
+                )
             }
         }
     }
