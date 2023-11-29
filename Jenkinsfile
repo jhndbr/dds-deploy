@@ -3,6 +3,7 @@ pipeline {
     environment {
         //be sure to replace "felipelujan" with your own Docker Hub username
         DOCKER_IMAGE_NAME = "jhndbr/deploys"
+        KUBECONFIG = credentials('kubernet_login')
     }
     stages {      
         stage('Build Docker Image') {
@@ -32,11 +33,21 @@ pipeline {
             when {
                 branch 'main'
             }
-           steps {
-        script {
-          kubernetesDeploy(configs: "myweb.yaml", kubeconfigId: "kubernet_login")
+          
+
+    stages {
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    // Configura el archivo kubeconfig
+                    withEnv(["KUBECONFIG=${KUBECONFIG}"]) {
+                        // Aplica la configuración de Kubernetes
+                        sh 'kubectl apply -f myweb.yaml'
+                    }
+                }
+            }
         }
-      }
+    }
             }
         }
     }
