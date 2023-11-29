@@ -8,7 +8,16 @@ pipeline {
     }
 
     stages {
-       
+        stage('Instalar Docker') {
+            steps {
+                script {
+                    sh 'apk add --update docker'
+                    sh 'rc-update add docker boot'
+                    sh 'service docker start'
+                }
+            }
+        }
+
         stage('Construir Imagen Docker') {
             steps {
                 script {
