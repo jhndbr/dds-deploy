@@ -8,13 +8,7 @@ pipeline {
     }
 
     stages {
-        stage('Clonar Repositorio') {
-           steps {
-                // Clona tu repositorio desde GitHub utilizando la credencial de GitHub
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'SubmoduleOption', disableSubmodules: false, parentCredentials: true, recursiveSubmodules: true, reference: '', trackingSubmodules: false]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: GITHUB_CREDENTIALS, url: 'https://github.com/jhndbr/dds-deploy.git']]])
-            }
-        }
-
+       
         stage('Construir Imagen Docker') {
             steps {
                 script {
