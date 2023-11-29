@@ -2,12 +2,12 @@ pipeline {
     agent any
     environment {
         //be sure to replace "felipelujan" with your own Docker Hub username
-        DOCKER_IMAGE_NAME = "jhndbr/gradle-test"
+        DOCKER_IMAGE_NAME = "jhndbr/dds-deploy-prueba"
     }
     stages {      
         stage('Build Docker Image') {
             when {
-                branch 'master'
+                branch 'main'
             }
             steps {
                 script {
@@ -17,7 +17,7 @@ pipeline {
         }
         stage('Push Docker Image') {
             when {
-                branch 'master'
+                branch 'main'
             }
             steps {
                 script {
@@ -30,7 +30,7 @@ pipeline {
         }
         stage('DeployToProduction') {
             when {
-                branch 'master'
+                branch 'main'
             }
             steps {
                 milestone(1)
