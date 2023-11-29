@@ -1,6 +1,11 @@
 pipeline {
-    agent any
-    
+    agent {
+        docker {
+            image 'jenkins/jenkins:latest'
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
+
     environment {
         // Define las variables necesarias
         DOCKER_IMAGE_NAME = 'imagenuno'
@@ -8,16 +13,6 @@ pipeline {
     }
 
     stages {
-        stage('Instalar Docker') {
-            steps {
-                script {
-                    sh 'apk add --update docker'
-                    sh 'rc-update add docker boot'
-                    sh 'service docker start'
-                }
-            }
-        }
-
         stage('Construir Imagen Docker') {
             steps {
                 script {
