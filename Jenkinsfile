@@ -1,17 +1,20 @@
 pipeline {
-    agent any
+    agent {
+        label 'docker' // Utiliza la etiqueta 'docker' como agente
+    }
     environment {
-        //be sure to replace "felipelujan" with your own Docker Hub username
+        // Asegúrate de reemplazar "jhndbr" con tu propio nombre de usuario de Docker Hub
         DOCKER_IMAGE_NAME = "jhndbr/dds-deploy"
     }
-    stages {      
+    stages {
         stage('Build Docker Image') {
             when {
                 branch 'main'
             }
             steps {
                 script {
-                     docker.build(DOCKER_IMAGE_NAME)
+                    // Construir la imagen Docker
+                    app = docker.build(DOCKER_IMAGE_NAME)
                 }
             }
         }
