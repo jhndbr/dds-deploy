@@ -7,13 +7,6 @@ pipeline {
 
     agent any
 
-    stages {
-        stage('Cloning our Git') {
-            steps {
-                git 'https://github.com/jhndbr/dds-deploy.git'
-            }
-        }
-
         stage('Building our image') {
             steps {
                 script {
