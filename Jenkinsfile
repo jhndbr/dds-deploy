@@ -32,13 +32,11 @@ pipeline {
             when {
                 branch 'main'
             }
-            steps {
-                milestone(1)
-                kubernetesDeploy(
-                    kubeconfigId: 'kubeconfig',
-                    configs: 'k8s_svc_deploy.yaml',
-                    enableConfigSubstitution: true
-                )
+           steps {
+        script {
+          kubernetesDeploy(configs: "myweb.yaml", kubeconfigId: "kubernet_login")
+        }
+      }
             }
         }
     }
