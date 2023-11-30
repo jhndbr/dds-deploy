@@ -29,11 +29,6 @@ pipeline {
                 }
             }
         }
-        stage('DeployToProduction') {
-            when {
-                branch 'main'
-            }
-          
 
     stages {
         stage('Deploy to Kubernetes') {
