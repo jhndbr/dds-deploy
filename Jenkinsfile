@@ -3,7 +3,7 @@ pipeline {
     environment {
         //be sure to replace "felipelujan" with your own Docker Hub username
         DOCKER_IMAGE_NAME = "jhndbr/deploys"
-        KUBECONFIG = credentials('kubernet_login')
+        KUBECONFIG = credentials('kubeconfig')
     }
     stages {      
         stage('Build Docker Image') {
