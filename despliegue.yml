@@ -27,4 +27,4 @@ spec:
             - name: javax_persistence_jdbc_user
               value: "postgres"
             - name: javax_persistence_jdbc_password
-              value: "123"
+              value: "libros"
