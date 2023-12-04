@@ -37,14 +37,18 @@ pipeline {
           
 
        stages {
-        stage('Desplegar en Kubernetes') {
+          stage('Deploy to Kubernetes') {
             steps {
-               kubernetes {
-                yamlFile 'myweb.yaml'
-                retries 2
-            }
+                script {
+                    // Configura el archivo kubeconfig
+                    withEnv(["KUBECONFIG=${KUBECONFIG}"]) {
+                        // Aplica la configuración de Kubernetes
+                        sh 'kubectl apply -f myweb.yaml'
+                    }
+                }
             }
         }
+
     }
             }
         }
