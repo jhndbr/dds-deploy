@@ -1,13 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: credicoopdeployservice
+  name: myapp-service
 spec:
-  selector: 
-    nombre: CredicoopWeb  # Corregido aquí
-    tier: backend         # Añadido aquí
+  selector:
+    app: myapp
   ports:
-    - protocol: 'TCP'
-      port: 5000
-      targetPort: 5000
+  - protocol: TCP
+    port: 80
+    targetPort: 8081
   type: LoadBalancer
