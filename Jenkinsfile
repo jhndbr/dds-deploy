@@ -6,48 +6,60 @@ pipeline {
         KUBECONFIG = credentials('kubeconfig')
     }
     stages {      
-        stage('Build Docker Image') {
-            when {
-                branch 'main'
-            }
-            steps {
-                script {
-                    app = docker.build(DOCKER_IMAGE_NAME)
-                }
-            }
+       stage('Build Docker Image') {
+      when {
+        branch 'main'
+      }
+      steps {
+        node {
+          checkout scm
+
+          docker.withServer('tcp://swarm.example.com:2376', 'swarm-certs') {
+            app = docker.build(DOCKER_IMAGE_NAME)
+          }
         }
-        stage('Push Docker Image') {
-            when {
-                branch 'main'
-            }
-            steps {
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub_login') {
-                        app.push("${env.BUILD_NUMBER}")
-                        app.push("latest")
-                    }
-                }
-            }
+      }
+    }
+        
+     stage('Push Docker Image') {
+  when {
+    branch 'main'
+  }
+  steps {
+    node {
+      checkout scm
+
+      docker.withServer('tcp://swarm.example.com:2376', 'swarm-certs') {
+        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub_login') {
+          app.push("${env.BUILD_NUMBER}")
+          app.push("latest")
         }
+      }
+    }
+  }
+}
         stage('DeployToProduction') {
             when {
                 branch 'main'
             }
           
 
-    stages {
-        stage('Deploy to Kubernetes') {
-            steps {
-                script {
-                    // Configura el archivo kubeconfig
-                    withEnv(["KUBECONFIG=${KUBECONFIG}"]) {
-                        // Aplica la configuración de Kubernetes
-                        sh 'kubectl apply -f myweb.yaml'
-                    }
-                }
-            }
-        }
+stage('Deploy to Kubernetes') {
+  when {
+    branch 'main'
+  }
+  steps {
+    node {
+      checkout scm
+
+      // Configura el archivo kubeconfig
+      withEnv(["KUBECONFIG=${KUBECONFIG}"]) {
+        // Aplica la configuración de Kubernetes
+        sh 'kubectl apply -f myweb.yaml'
+      }
     }
+  }
+}
             }
         }
     }
