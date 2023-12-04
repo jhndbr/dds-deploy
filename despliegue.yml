@@ -1,19 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: credicoopdeploy
+  name: myapp-deployment
 spec:
   replicas: 3
   selector:
     matchLabels:
-      nombre: CredicoopWeb
-      tier: backend
+      app: myapp
   template:
-    metadata: 
+    metadata:
       labels:
-        nombre: CredicoopWeb
-        tier: backend
-    spec: 
+        app: myapp
+    spec:
       containers:
-        - name: credicoopweb-node
-          image: jhndbr/deploys:latest
+      - name: myapp
+        image: jhndbr/deploys:latest
+        ports:
+        - containerPort: 8081
+        env:
+        - name: hibernate_hbm2ddl_auto
+          value: create
+        - name: javax_persistence_jdbc_driver
+          value: org.postgresql.Driver
+        - name: javax_persistence_jdbc_url
+          value: jdbc:postgresql://dbservice/dblibros
+        - name: javax_persistence_jdbc_user
+          value: postgres
+        - name: javax_persistence_jdbc_password
+          value: 123
