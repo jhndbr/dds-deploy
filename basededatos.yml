@@ -1,12 +1,26 @@
-apiVersion: v1
-kind: Service
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: db-service
+  name: db-deployment
 spec:
+  replicas: 1
   selector:
-    app: db
-  ports:
-  - protocol: TCP
-    port: 5432
-    targetPort: 5432
-  type: ClusterIP
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+      - name: db
+        image: postgres:latest
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: dblibros
+        - name: POSTGRES_USER
+          value: postgres
+        - name: POSTGRES_PASSWORD
+          value: 123
