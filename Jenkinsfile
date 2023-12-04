@@ -36,13 +36,12 @@ pipeline {
             }
           
 
-    stages {
-        stage('Deploy to Kubernetes') {
+       stages {
+        stage('Desplegar en Kubernetes') {
             steps {
-                script {
-                    // Configura el archivo kubeconfig
-                    withEnv(["KUBECONFIG=${KUBECONFIG}"]) {
-                        // Aplica la configuración de Kubernetes
+                kubeconfig(credentialsId: KUBECONFIG_CREDENTIALS, serverUrl: 'https://192.168.58.2:8443') {
+                    script {
+                        // Puedes ejecutar comandos de Kubernetes aquí
                         sh 'kubectl apply -f myweb.yaml'
                     }
                 }
