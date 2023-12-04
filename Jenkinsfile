@@ -5,6 +5,23 @@ pipeline {
         DOCKER_IMAGE_NAME = "jhndbr/deploys"
         KUBECONFIG = credentials('kubeconfig')
     }
+
+stage('SonarQube analysis') {
+            steps{
+                script{
+                    def scannerHome = tool 'sonar-scanner';
+                    withSonarQubeEnv('sonarqube-server') {
+                    sh "${scannerHome}/bin/sonar-scanner \
+                        -D sonar.login=admin \
+                        -D sonar.password=prueba \
+                        -D sonar.projectKey=control-libros-code \
+                        -D sonar.exclusions=vendor/**,resources/**,**/*.java \
+                        -D sonar.host.url=http://192.168.0.227:9000/"
+                    }    
+                }   
+            }  
+        }
+    
     stages {      
         stage('Build Docker Image') {
             when {
