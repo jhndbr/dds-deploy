@@ -43,7 +43,8 @@ pipeline {
                     // Configura el archivo kubeconfig
                     withEnv(["KUBECONFIG=${KUBECONFIG}"]) {
                         // Aplica la configuración de Kubernetes
-                        sh 'kubectl apply -f myweb.yaml'
+                        sh 'kubectl apply -f servicio.yml'
+                        sh 'kubectl apply -f despliegue.yml'
                     }
                 }
             }
