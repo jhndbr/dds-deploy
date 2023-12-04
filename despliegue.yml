@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: credicoopdeploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      nombre: CredicoopWeb
+      tier: backend
+  template:
+    metadata: 
+      labels:
+        nombre: CredicoopWeb
+        tier: backend
+    spec: 
+      containers:
+        - name: credicoopweb-node
+          image: jhndbr/deploys:latest
