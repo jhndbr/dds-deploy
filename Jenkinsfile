@@ -39,15 +39,10 @@ pipeline {
        stages {
         stage('Desplegar en Kubernetes') {
             steps {
-                kubeconfig(
-                    credentialsId: KUBECONFIG,
-                    serverUrl: 'https://192.168.58.2:8443'
-                ) {
-                    script {
-                        // Puedes ejecutar comandos de Kubernetes aquí
-                        sh 'kubectl apply -f myweb.yaml'
-                    }
-                }
+               kubernetes {
+                yamlFile 'myweb.yaml'
+                retries 2
+            }
             }
         }
     }
