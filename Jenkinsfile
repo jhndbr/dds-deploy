@@ -5,8 +5,9 @@ pipeline {
         DOCKER_IMAGE_NAME = "jhndbr/deploys"
         KUBECONFIG = credentials('kubeconfig')
     }
-
-    stage('SonarQube analysis') {
+ 
+    stages {      
+         stage('SonarQube analysis') {
              steps{
                 script{
                     def scannerHome = tool 'sonar-scanner';
@@ -21,8 +22,6 @@ pipeline {
                 }   
             }  
         }
-    
-    stages {      
         stage('Build Docker Image') {
             when {
                 branch 'main'
