@@ -7,7 +7,7 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: 123
+      POSTGRES_PASSWORD: libros
       POSTGRES_DB: dblibros
     volumes:
     - ./posgresdb:/var/lib/postgresql/data
@@ -20,7 +20,7 @@ services:
     environment:
        hibernate.hbm2ddl.auto: create
        javax.persistence.jdbc.driver: org.postgresql.Driver
-       javax.persistence.jdbc.password: 123
+       javax.persistence.jdbc.password: libros
        javax.persistence.jdbc.url: jdbc:postgresql://dbservice/dblibros
        javax.persistence.jdbc.user: postgres
     depends_on:
