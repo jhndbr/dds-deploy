@@ -11,9 +11,10 @@ pipeline {
                 branch 'main'
             }
             steps {
-                script {
-                    def app = docker.build(DOCKER_IMAGE_NAME)
-                }
+               script {
+        // Ejecuta el comando como root
+        sh 'sudo docker build -t ${DOCKER_IMAGE_NAME} .'
+    }
             }
         }
         stage('Push Docker Image') {
