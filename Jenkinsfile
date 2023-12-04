@@ -13,8 +13,8 @@ stage('SonarQube analysis') {
                     withSonarQubeEnv('sonarqube-server') {
                     sh "${scannerHome}/bin/sonar-scanner \
                         -D sonar.login=admin \
-                        -D sonar.password=prueba \
-                        -D sonar.projectKey=control-libros-code \
+                        -D sonar.password=Credicoop \
+                        -D sonar.projectKey=jenkins-sonar \
                         -D sonar.exclusions=vendor/**,resources/**,**/*.java \
                         -D sonar.host.url=http://192.168.0.227:9000/"
                     }    
