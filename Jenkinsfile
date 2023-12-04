@@ -10,12 +10,12 @@ pipeline {
             when {
                 branch 'main'
             }
-            steps {
-               script {
-        // Ejecuta el comando como root
-        sh 'sudo docker build -t ${DOCKER_IMAGE_NAME} .'
-    }
+           steps {
+                script {
+                    app = docker.build(DOCKER_IMAGE_NAME)
+                }
             }
+
         }
         stage('Push Docker Image') {
             when {
