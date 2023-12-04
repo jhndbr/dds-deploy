@@ -6,8 +6,8 @@ pipeline {
         KUBECONFIG = credentials('kubeconfig')
     }
 
-stage('SonarQube analysis') {
-            steps{
+    stage('SonarQube analysis') {
+             steps{
                 script{
                     def scannerHome = tool 'sonar-scanner';
                     withSonarQubeEnv('sonarqube-server') {
@@ -16,7 +16,7 @@ stage('SonarQube analysis') {
                         -D sonar.password=Credicoop \
                         -D sonar.projectKey=jenkins-sonar \
                         -D sonar.exclusions=vendor/**,resources/**,**/*.java \
-                        -D sonar.host.url=http://192.168.0.227:9000/"
+                        -D sonar.host.url=http://192.168.0.78:9000/"
                     }    
                 }   
             }  
