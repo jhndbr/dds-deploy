@@ -8,20 +8,26 @@ pipeline {
  
     stages {      
          stage('SonarQube analysis') {
-             steps{
-                script{
-                    def scannerHome = tool 'sonar-scanner';
-                    withSonarQubeEnv('sonarqube-server') {
-                    sh "${scannerHome}/bin/sonar-scanner \
-                        -D sonar.login=admin \
-                        -D sonar.password=Credicoop \
-                        -D sonar.projectKey=jenkins-sonar \
-                        -D sonar.exclusions=vendor/**,resources/**,**/*.java \
-                        -D sonar.host.url=http://192.168.0.78:9000/"
+        steps {
+            script {
+            def scannerHome = tool 'sonar-scanner';
+            
+            // Configura la versión de Java para Sonar Scanner
+            def javaHome = tool 'java-17'
+            env.PATH = "${javaHome}/bin:${env.PATH}"
+            
+            withSonarQubeEnv('sonarqube-server') {
+                sh "${scannerHome}/bin/sonar-scanner \
+                    -D sonar.login=admin \
+                    -D sonar.password=Credicoop \
+                    -D sonar.projectKey=jenkins-sonar \
+                    -D sonar.exclusions=vendor/**,resources/**,**/*.java \
+                    -D sonar.host.url=http://192.168.0.78:9000/"
                     }    
                 }   
             }  
         }
+
         stage('Build Docker Image') {
             when {
                 branch 'main'
