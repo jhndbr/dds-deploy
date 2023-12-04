@@ -4,7 +4,8 @@ metadata:
   name: credicoopdeployservice
 spec:
   selector: 
-    nombre: CredicoopWeb
+    nombre: CredicoopWeb  # Corregido aquí
+    tier: backend         # Añadido aquí
   ports:
     - protocol: 'TCP'
       port: 5000
