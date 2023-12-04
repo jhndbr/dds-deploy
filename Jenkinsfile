@@ -44,6 +44,9 @@ pipeline {
                     withEnv(["KUBECONFIG=${KUBECONFIG}"]) {
                         // Aplica la configuración de Kubernetes
                         sh 'kubectl apply -f despliegue.yml'
+                        sh 'kubectl apply -f servicio.yml'
+                        sh 'kubectl apply -f basededatos.yml'
+                        sh 'kubectl apply -f serviciobd.yml'
 
                     }
                 }
